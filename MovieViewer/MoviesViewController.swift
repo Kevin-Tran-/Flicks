@@ -8,9 +8,11 @@
 
 import UIKit
 import AFNetworking
+import EZLoadingActivity
 
 
 class MoviesViewController: UIViewController, UITableViewDataSource, UITableViewDelegate {
+    var refreshControl: UIRefreshControl!       //add refresh on drag
 
     @IBOutlet weak var tableView: UITableView!
     
@@ -18,7 +20,8 @@ class MoviesViewController: UIViewController, UITableViewDataSource, UITableView
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        
+        EZLoadingActivity.show("Uploading...", disableUI: false)
+
         tableView.dataSource = self
         tableView.delegate = self
         
@@ -40,10 +43,16 @@ class MoviesViewController: UIViewController, UITableViewDataSource, UITableView
                             self.movies = responseDictionary["results"] as? [NSDictionary]
                             self.tableView.reloadData()
                             
+                            
                     }
                 }
         });
         task.resume()
+        refreshControl = UIRefreshControl()
+        refreshControl.addTarget(self, action: "onRefresh", forControlEvents: UIControlEvents.ValueChanged)
+        tableView.insertSubview(refreshControl, atIndex: 0)
+        EZLoadingActivity.hide(success: true, animated: false)
+
 
     }
 
@@ -82,15 +91,23 @@ class MoviesViewController: UIViewController, UITableViewDataSource, UITableView
     }
     
     
-
-    /*
-    // MARK: - Navigation
-
-    // In a storyboard-based application, you will often want to do a little preparation before navigation
-    override func prepareForSegue(segue: UIStoryboardSegue, sender: AnyObject?) {
-        // Get the new view controller using segue.destinationViewController.
-        // Pass the selected object to the new view controller.
+    func delay(delay:Double, closure:()->()) {
+        dispatch_after(
+            dispatch_time(
+                DISPATCH_TIME_NOW,
+                Int64(delay * Double(NSEC_PER_SEC))
+            ),
+            dispatch_get_main_queue(), closure)
     }
-    */
+    
+    func onRefresh() {
+        EZLoadingActivity.show("Updating...", disableUI: false)
+
+        delay(2, closure: {
+            EZLoadingActivity.hide(success: true, animated: false)
+
+            self.refreshControl.endRefreshing()
+        })
+    }
 
 }
