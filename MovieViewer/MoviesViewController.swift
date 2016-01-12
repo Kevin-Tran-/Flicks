@@ -95,7 +95,7 @@ class MoviesViewController: UIViewController, UITableViewDataSource, UITableView
                             self.tableView.reloadData()
                     }
                 }
-                print("kill refresh 1")
+                print("Refresh Complete")
                 EZLoadingActivity.hide(success: true, animated: false)
         });
        
