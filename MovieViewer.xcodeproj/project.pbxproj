@@ -14,6 +14,7 @@
 		BC54273A1C3C93FF001E5F30 /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = BC5427381C3C93FF001E5F30 /* LaunchScreen.storyboard */; };
 		BC5427421C3C94AF001E5F30 /* MoviesViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = BC5427411C3C94AF001E5F30 /* MoviesViewController.swift */; };
 		BC5427451C3CA1A4001E5F30 /* MovieCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = BC5427441C3CA1A4001E5F30 /* MovieCell.swift */; };
+		BCF5FE2D1C5EB4030098F159 /* DetailViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = BCF5FE2C1C5EB4030098F159 /* DetailViewController.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -27,6 +28,7 @@
 		BC54273B1C3C93FF001E5F30 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		BC5427411C3C94AF001E5F30 /* MoviesViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MoviesViewController.swift; sourceTree = "<group>"; };
 		BC5427441C3CA1A4001E5F30 /* MovieCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MovieCell.swift; sourceTree = "<group>"; };
+		BCF5FE2C1C5EB4030098F159 /* DetailViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DetailViewController.swift; sourceTree = "<group>"; };
 		E9AFA210C2C86B3ECC78FCB5 /* Pods-MovieViewer.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-MovieViewer.debug.xcconfig"; path = "Pods/Target Support Files/Pods-MovieViewer/Pods-MovieViewer.debug.xcconfig"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
@@ -103,6 +105,7 @@
 			isa = PBXGroup;
 			children = (
 				BC5427411C3C94AF001E5F30 /* MoviesViewController.swift */,
+				BCF5FE2C1C5EB4030098F159 /* DetailViewController.swift */,
 			);
 			name = ViewControllers;
 			sourceTree = "<group>";
@@ -232,6 +235,7 @@
 				BC5427301C3C93FF001E5F30 /* AppDelegate.swift in Sources */,
 				BC5427421C3C94AF001E5F30 /* MoviesViewController.swift in Sources */,
 				BC5427451C3CA1A4001E5F30 /* MovieCell.swift in Sources */,
+				BCF5FE2D1C5EB4030098F159 /* DetailViewController.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

@@ -17,6 +17,7 @@ class MoviesViewController: UIViewController, UITableViewDataSource, UITableView
     @IBOutlet weak var tableView: UITableView!
     
     var movies: [NSDictionary]?     //? to make it optional, safer and less likely to crash
+    var endpoint: String!
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -54,18 +55,17 @@ class MoviesViewController: UIViewController, UITableViewDataSource, UITableView
         let movie = movies![indexPath.row]
         let title = movie["title"] as! String
         let overview = movie["overview"] as! String
-        let posterPath = movie["poster_path"] as! String
-        
         let baseURL = "http://image.tmdb.org/t/p/w500"
+
+        if let posterPath = movie["poster_path"] as? String {
+            let imageURL = NSURL(string: baseURL + posterPath)
+            cell.posterView.setImageWithURL(imageURL!)
+        }
         
-        let imageURL = NSURL(string: baseURL + posterPath)
-        
-        cell.posterView.setImageWithURL(imageURL!)
         cell.titleLabel.text = title
         cell.overviewLabel.text = overview
         
-        
-        print("row \(indexPath.row)")
+        //print("row \(indexPath.row)")
         return cell
         
     }
@@ -77,7 +77,7 @@ class MoviesViewController: UIViewController, UITableViewDataSource, UITableView
         tableView.delegate = self
         
         let apiKey = "a07e22bc18f5cb106bfe4cc1f83ad8ed"
-        let url = NSURL(string:"https://api.themoviedb.org/3/movie/now_playing?api_key=\(apiKey)")
+        let url = NSURL(string:"https://api.themoviedb.org/3/movie/\(endpoint)?api_key=\(apiKey)")
         let request = NSURLRequest(URL: url!)
         let session = NSURLSession(
             configuration: NSURLSessionConfiguration.defaultSessionConfiguration(),
@@ -121,11 +121,19 @@ class MoviesViewController: UIViewController, UITableViewDataSource, UITableView
         print("Refreshing Movies")
         self.refreshControl.endRefreshing()
         print("Refreshing Complete")
-
-
-
-
-
+    }
+    
+    override func prepareForSegue(segue: UIStoryboardSegue, sender: AnyObject?) {
+        
+        let cell = sender as! UITableViewCell
+        let indexPath = tableView.indexPathForCell((cell))
+        let movie = movies![indexPath!.row]
+        
+        let detailViewController = segue.destinationViewController as! DetailViewController
+        detailViewController.movie = movie
+        
+        print("prepare for seque called")
+        
     }
 
 }
