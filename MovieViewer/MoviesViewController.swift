@@ -29,7 +29,14 @@ class MoviesViewController: UIViewController, UITableViewDataSource, UITableView
     override func viewDidAppear(animated: Bool) {
         super.viewDidAppear(animated)
         print("view did appear")
+        
 
+        navigationController?.navigationBar.barTintColor = UIColor.blackColor()
+        navigationController?.navigationBar.titleTextAttributes = [NSForegroundColorAttributeName: UIColor.whiteColor()]
+
+        tabBarController!.tabBar.barTintColor = UIColor.blackColor()
+        
+        
         loadMovies()
 
         refreshControl = UIRefreshControl()
