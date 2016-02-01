@@ -59,7 +59,7 @@ class MoviesViewController: UIViewController, UITableViewDataSource, UITableView
         //selected
         //cell.selectionStyle = .None
         let backgroundView = UIView()
-        backgroundView.backgroundColor = UIColor.blueColor()
+        backgroundView.backgroundColor = UIColorFromRGB(0x1e90ff)
         cell.selectedBackgroundView = backgroundView
         
         let movie = movies![indexPath.row]
@@ -79,6 +79,15 @@ class MoviesViewController: UIViewController, UITableViewDataSource, UITableView
         //print("row \(indexPath.row)")
         return cell
         
+    }
+    
+    func UIColorFromRGB(rgbValue: UInt) -> UIColor {
+        return UIColor(
+            red: CGFloat((rgbValue & 0xFF0000) >> 16) / 255.0,
+            green: CGFloat((rgbValue & 0x00FF00) >> 8) / 255.0,
+            blue: CGFloat(rgbValue & 0x0000FF) / 255.0,
+            alpha: CGFloat(1.0)
+        )
     }
     
     
