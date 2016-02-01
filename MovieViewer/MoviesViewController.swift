@@ -10,10 +10,9 @@ import UIKit
 import AFNetworking
 import EZLoadingActivity
 
-
 class MoviesViewController: UIViewController, UITableViewDataSource, UITableViewDelegate {
     var refreshControl: UIRefreshControl!       //add refresh on drag
-
+    
     @IBOutlet weak var tableView: UITableView!
     
     var movies: [NSDictionary]?     //? to make it optional, safer and less likely to crash
@@ -21,27 +20,23 @@ class MoviesViewController: UIViewController, UITableViewDataSource, UITableView
     
     override func viewDidLoad() {
         super.viewDidLoad()
+        navigationController?.navigationBar.barTintColor = UIColor.blackColor()
+        navigationController?.navigationBar.titleTextAttributes = [NSForegroundColorAttributeName: UIColor.whiteColor()]
         
-
-
+        tabBarController!.tabBar.barTintColor = UIColor.blackColor()
+        
+        
+        
+        loadMovies()
+        
+        refreshControl = UIRefreshControl()
+        refreshControl.addTarget(self, action: "onRefresh", forControlEvents: UIControlEvents.ValueChanged)
+        tableView.insertSubview(refreshControl, atIndex: 0)
     }
     
     override func viewDidAppear(animated: Bool) {
         super.viewDidAppear(animated)
         print("view did appear")
-        
-
-        navigationController?.navigationBar.barTintColor = UIColor.blackColor()
-        navigationController?.navigationBar.titleTextAttributes = [NSForegroundColorAttributeName: UIColor.whiteColor()]
-
-        tabBarController!.tabBar.barTintColor = UIColor.blackColor()
-        
-        
-        loadMovies()
-
-        refreshControl = UIRefreshControl()
-        refreshControl.addTarget(self, action: "onRefresh", forControlEvents: UIControlEvents.ValueChanged)
-        tableView.insertSubview(refreshControl, atIndex: 0)
     }
 
     override func didReceiveMemoryWarning() {
@@ -56,8 +51,16 @@ class MoviesViewController: UIViewController, UITableViewDataSource, UITableView
         }
     }
     
+    
+    
     func tableView(tableView: UITableView, cellForRowAtIndexPath indexPath: NSIndexPath) -> UITableViewCell {
         let cell = tableView.dequeueReusableCellWithIdentifier("MovieCell", forIndexPath: indexPath) as! MovieCell
+        
+        //selected
+        //cell.selectionStyle = .None
+        let backgroundView = UIView()
+        backgroundView.backgroundColor = UIColor.blueColor()
+        cell.selectedBackgroundView = backgroundView
         
         let movie = movies![indexPath.row]
         let title = movie["title"] as! String
@@ -71,11 +74,13 @@ class MoviesViewController: UIViewController, UITableViewDataSource, UITableView
         
         cell.titleLabel.text = title
         cell.overviewLabel.text = overview
+        cell.overviewLabel.sizeToFit()
         
         //print("row \(indexPath.row)")
         return cell
         
     }
+    
     
     func loadMovies(){
         EZLoadingActivity.show("Refreshing...", disableUI: false)
@@ -100,17 +105,15 @@ class MoviesViewController: UIViewController, UITableViewDataSource, UITableView
                             NSLog("response: \(responseDictionary)")
                             self.movies = responseDictionary["results"] as? [NSDictionary]
                             self.tableView.reloadData()
+                            EZLoadingActivity.hide(success: true, animated: false)
+                            print("Refresh Complete")
                     }
+                } else {
+                    EZLoadingActivity.hide(success: false, animated: false)
                 }
-                print("Refresh Complete")
-                EZLoadingActivity.hide(success: true, animated: false)
         });
        
         task.resume()
-        
-
-
-        
     }
     
     func delay(delay:Double, closure:()->()) {

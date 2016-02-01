@@ -16,18 +16,32 @@ class DetailViewController: UIViewController {
     @IBOutlet weak var overviewLabel: UILabel!
     @IBOutlet weak var scrollView: UIScrollView!
     @IBOutlet weak var infoView: UIView!
+    @IBOutlet weak var averageLabel: UILabel!
+    @IBOutlet weak var runtimeLabel: UILabel!
     
+    var movieId: Int!
     var movie: NSDictionary!
+    var moviesIndex: NSDictionary!
     
     override func viewDidLoad() {
         super.viewDidLoad()
         
-        print(movie)
+        //print(movie)
         
         scrollView.contentSize = CGSize(width: scrollView.frame.size.width, height: infoView.frame.origin.y + infoView.frame.size.height)
         
         let title = movie["title"] as? String
         titleLabel.text = title
+        
+        self.movieId = movie.valueForKeyPath("id") as! Int
+        
+        
+        
+        getInfo()
+        
+        let average = movie["vote_average"] as? Double
+        averageLabel.text = String(format: "%.2f", average!)
+        
         
         let overview = movie["overview"] as? String
         overviewLabel.text = overview
@@ -49,7 +63,35 @@ class DetailViewController: UIViewController {
         // Dispose of any resources that can be recreated.
     }
     
+    func getInfo(){
+        let apiKey = "a07e22bc18f5cb106bfe4cc1f83ad8ed"
+        let url = NSURL(string:"https://api.themoviedb.org/3/movie/\(movieId)?api_key=\(apiKey)")
+        let request = NSURLRequest(URL: url!)
+        let session = NSURLSession(
+            configuration: NSURLSessionConfiguration.defaultSessionConfiguration(),
+            delegate:nil,
+            delegateQueue:NSOperationQueue.mainQueue()
+        )
+        
+        let task : NSURLSessionDataTask = session.dataTaskWithRequest(request,
+            completionHandler: { (dataOrNil, response, error) in
+                if let data = dataOrNil {
+                    if let responseDictionary = try! NSJSONSerialization.JSONObjectWithData(
+                        data, options:[]) as? NSDictionary {
+                            NSLog("response: \(responseDictionary)")
+                            //self.moviesIndex = responseDictionary["runtime"] as? NSDictionary
+                            if let runtime = responseDictionary.valueForKeyPath("runtime") as! Int!{
+                                self.runtimeLabel.text = String(format: "%d mins", runtime)
+                            }
+                    }
+                } 
+        });
+        
+        
+        
+        task.resume()
 
+    }
     /*
     // MARK: - Navigation
 
