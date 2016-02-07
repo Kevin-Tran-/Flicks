@@ -28,7 +28,7 @@ class DetailViewController: UIViewController {
         
         //print(movie)
         
-        scrollView.contentSize = CGSize(width: scrollView.frame.size.width, height: infoView.frame.origin.y + infoView.frame.size.height)
+
         
         let title = movie["title"] as? String
         titleLabel.text = title
@@ -47,6 +47,10 @@ class DetailViewController: UIViewController {
         overviewLabel.text = overview
         
         overviewLabel.sizeToFit()
+        infoView.frame.size.height = overviewLabel.frame.size
+        .height + 100
+        
+        scrollView.contentSize = CGSize(width: scrollView.frame.size.width, height: infoView.frame.origin.y + infoView.frame.size.height)        
         
         let baseURL = "http://image.tmdb.org/t/p/w500"
         
